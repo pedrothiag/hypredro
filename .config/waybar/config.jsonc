@@ -1,32 +1,27 @@
 // -*- mode: jsonc -*-
 {
     "layer": "top", // Waybar at top layer
-    "position": "top", // Waybar position (top|bottom|left|right)
-    "height": 36, // Waybar height (to be removed for auto height)
-    // "margin": "5 5 0 5",
-    // "width": 1280, // Waybar width
+    "position": "bottom", // Waybar position (top|bottom|left|right)
+    "height": 38, // Waybar height (to be removed for auto height)
     "spacing": 2, // Gaps between modules (4px)
-    // Choose the order of the modules
+    
     "modules-left": [
-        //"custom/arch",
-	"hyprland/workspaces"
-	//"hyprland/window"
+	    "hyprland/workspaces",
+        "custom/vertbar",
+        "wlr/taskbar"
     ],
-    "modules-center": [
-	"mpris",
-        "clock"
-    ] ,
+    //"modules-center": [
+	//    "wlr/taskbar"
+    //] ,
     "modules-right": [
         "idle_inhibitor",
         "backlight",
-	"power-profiles-daemon",
-	"battery",
+	    "power-profiles-daemon",
+	    "battery",
         "pulseaudio",
-        //"network",
-        //"power-profiles-daemon",
         "battery",
         "tray",
-	//"user",
+        "clock",
         "custom/power"
     ],
 
@@ -35,31 +30,34 @@
             "active": "●",
             "default": "○"
         },
-	"persistent-workspaces": {
-	    "*": 4
-	},
-        "format": "{icon}{windows}",
+	    "persistent-workspaces": {
+	        "*": 4
+	    },
+        "format": "{icon}",
         "format-window-separator": "",
+        //Configuração para apresentar as janelas ao lado de indicador de área de trabalho
         "workspace-taskbar": {
             "enable": true,
             "update-active-window": true,
             "format": "{icon}",
             "icon-size": 18
         },
-        /*"format": "{icon}",*/
         "on-scroll-up": "hyprctl dispatch workspace e+1",
         "on-scroll-down": "hyprctl dispatch workspace e-1"
     },
 
-    "mpris": {
-	"format": "{status_icon} {title}",
-	"format-paused": "{status_icon} {title}",
-	"status-icon": {
-		"playing": "▶",
-		"paused": "⏸"
-	}
+    "custom/vertbar": {
+        "format": "|",
+        "tooltip": false
     },
 
+    "wlr/taskbar": {
+        "format": "{icon}",
+        "icon-size": 18,
+        "tooltip-format": "{title}",
+        "on-click": "activate",
+        "on-click-middle": "close"
+    },
 
     // "keyboard-state": {
     //     "numlock": true,

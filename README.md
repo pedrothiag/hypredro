@@ -2,6 +2,8 @@
 
 Automated setup script for a **Hyprland** desktop environment on **Arch Linux**, with pre-configured dotfiles and optional support for NVIDIA, LaTeX, CUDA, and development tools.
 
+![hypredro](./main.png)
+
 ## 📋 Prerequisites
 
 - Clean Arch Linux installation

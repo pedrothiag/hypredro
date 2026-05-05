@@ -1,9 +1,9 @@
 window {
     margin: 5px;
     border: 2px solid #60a5fa;
-    /*border-radius: 8px;*/
-    background-color: #1d1f22;
-    font-family: "SF Pro Text";
+    border-radius: 6px;
+    background-color: #100f0f;
+    font-family: "SF Pro Text", "Fira Code Nerd Font";
     font-size: 16px;
 }
 
@@ -15,7 +15,7 @@ window {
     margin: 5px;
     border: none;
     color: #ffffff;
-    background-color: #303030;
+    background-color: #201f1e;
     border-radius: 0px;
 }
 
@@ -24,11 +24,18 @@ window {
 }
 
 #entry:selected {
-    background-color: #303030;
+    background-color: #201f1e;
     border-radius: 0px;
 }
 
 #text:selected {
     color: #60a5fa;
     font-weight: bold;
+}
+
+
+#img {
+    min-width: 22px;
+    min-height: 22px;
+    margin-right: 16px;
 }

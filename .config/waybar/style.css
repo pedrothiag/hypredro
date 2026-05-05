@@ -5,9 +5,9 @@
 }
 
 tooltip {
-    border-radius: 0px;
+    border-radius: 6px;
     padding: 20px;
-    background-color: rgba(14,14,14,0.95);
+    background-color: #2e2e32;
 }
 
 tooltip label {
@@ -34,10 +34,6 @@ window#waybar.chromium {
     border: none;
 }
 
-/*#workspaces {
-    padding-left: 5px;
-}*/
-
 #workspaces button {
     box-shadow: inset 0 -3px transparent;
     border: none;
@@ -48,12 +44,12 @@ window#waybar.chromium {
 /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
 #workspaces button:hover {
     /*background: inherit;*/
-    background-color: #1a2740;
+    background-color: #6f6f72;
 }
 
 #workspaces button.focused, #workspaces button.active {
-    background-color: #585b70;
-    /*color: #14161b;*/
+    background-color: #2e6581;
+    box-shadow: inset 0 -3px #3ba0d5;
 }
 
 #workspaces button.urgent {
@@ -65,9 +61,21 @@ window#waybar.chromium {
     padding-right: 2px;
 }
 
-/*#window {
-    text-transform: capitalize;
-}*/
+#custom-vertbar {
+    color: #cecdc3;
+    font-size: 22px;
+    font-weight: 300;
+}
+
+#taskbar button {
+    border-radius: 0px;
+    /*margin-right: 4px;*/
+}
+
+#taskbar button.active {
+    background-color: #2e6581;
+    box-shadow: inset 0 -3px #3ba0d5;
+}
 
 #mode {
     background-color: #64727D;
@@ -144,56 +152,3 @@ label:focus {
     -gtk-icon-effect: highlight;
     background-color: #eb4d4b;
 }
-
-/*#language {
-    background: #00b093;
-    color: #740864;
-    padding: 0 5px;
-    margin: 0 5px;
-    min-width: 16px;
-}
-
-#keyboard-state {
-    background: #97e1ad;
-    color: #000000;
-    padding: 0 0px;
-    margin: 0 5px;
-    min-width: 16px;
-}
-
-#keyboard-state > label {
-    padding: 0 5px;
-}
-
-#keyboard-state > label.locked {
-    background: rgba(0, 0, 0, 0.2);
-}
-
-#scratchpad {
-    background: rgba(0, 0, 0, 0.2);
-}
-
-#scratchpad.empty {
-	background-color: transparent;
-}
-
-#privacy {
-    padding: 0;
-}
-
-#privacy-item {
-    padding: 0 5px;
-    color: white;
-}
-
-#privacy-item.screenshare {
-    background-color: #cf5700;
-}
-
-#privacy-item.audio-in {
-    background-color: #1ca000;
-}
-
-#privacy-item.audio-out {
-    background-color: #0069d4;
-}*/
