@@ -1,0 +1,6 @@
+[KDE]
+widgetStyle=qt6ct-style
+
+[General]
+TerminalApplication=kitty
+TerminalService=kitty.desktop

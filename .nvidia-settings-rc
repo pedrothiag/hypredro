@@ -1,0 +1,21 @@
+#
+# /home/pedro/.nvidia-settings-rc
+#
+# Configuration file for nvidia-settings - the NVIDIA Settings utility
+# Generated on Fri May  1 17:07:38 2026
+#
+
+# ConfigProperties:
+
+RcFileLocale = C
+DisplayStatusBar = Yes
+SliderTextEntries = Yes
+IncludeDisplayNameInConfigFile = No
+UpdateRulesOnProfileNameChange = Yes
+Timer = PowerMizer_Monitor_(GPU_0),Yes,1000
+Timer = Thermal_Monitor_(GPU_0),Yes,1000
+Timer = Memory_Used_(GPU_0),Yes,3000
+
+# Attributes:
+
+[GPU:0]/GPUPowerMizerMode=0

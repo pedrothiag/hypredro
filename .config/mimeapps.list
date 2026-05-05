@@ -1,0 +1,12 @@
+[Added Associations]
+text/plain=org.xfce.mousepad.desktop;
+application/pdf=org.gnome.Evince.desktop;
+image/jpeg=org.gnome.Loupe.desktop;
+image/png=org.gnome.Loupe.desktop;
+application/x-shellscript=org.xfce.mousepad.desktop;
+
+[Default Applications]
+image/jpeg=org.gnome.Loupe.desktop
+x-scheme-handler/slack=slack.desktop
+image/png=org.gnome.Loupe.desktop
+text/plain=org.kde.kate.desktop

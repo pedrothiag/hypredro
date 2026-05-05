@@ -1,0 +1,9 @@
+show=drun
+width=30%
+height=400
+prompt=Pesquisar
+allow_images=true
+layer=overlay
+term=foot
+sort_order=alphabetical
+gtk_dark=true
