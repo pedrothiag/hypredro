@@ -58,17 +58,22 @@ clear
 CHOICES=$(dialog --stdout \
     --title "Optional Components" \
     --checklist "Select components to install:\n(Space: check/uncheck  |  Enter: confirm  |  Esc: skip)" \
-    24 65 13 \
-    "latex"      "LaTeX (TeX Live)"            off \
-    "cuda"       "CUDA (NVIDIA GPU)"           off \
-    "python"     "Python venv (PyTorch + ML)"  off \
-    "vscode"     "Visual Studio Code"          off \
-    "epson"      "Epson printer drivers"       off \
-    "onlyoffice" "OnlyOffice"                  off \
-    "slack"      "Slack"                       off \
-    "steam"      "Steam"                       off \
-    "discord"    "Discord"                     off \
-    "claudecode" "Claude Code (CLI)"           off)
+    28 65 15 \
+    "latex"        "LaTeX (TeX Live)"            off \
+    "cuda"         "CUDA (NVIDIA GPU)"           off \
+    "python"       "Python venv (PyTorch + ML)"  off \
+    "vscode"       "Visual Studio Code"          off \
+    "epson"        "Epson printer drivers"       off \
+    "onlyoffice"   "OnlyOffice"                  off \
+    "slack"        "Slack"                       off \
+    "steam"        "Steam"                       off \
+    "discord"      "Discord"                     off \
+    "libreoffice"  "LibreOffice (pt-BR)"         off \
+    "obs"          "OBS Studio"                  off \
+    "wine"         "Wine + Winetricks"           off \
+    "docker"       "Docker + Docker Compose"     off \
+    "nodejs"       "Node.js + npm"               off \
+    "arduino"      "Arduino CLI + IDE"           off)
 DIALOG_STATUS=$?
 clear
 
@@ -360,14 +365,43 @@ if has "discord"; then
     echo "  ✓ Discord installed."
 fi
 
-if has "claudecode"; then
-    echo "  Installing Claude Code (CLI)..."
-    if ! command -v npm &>/dev/null; then
-        echo "  Installing Node.js and npm (Claude Code dependency)..."
-        sudo pacman -S --needed --noconfirm nodejs npm
-    fi
-    sudo npm install -g @anthropic-ai/claude-code
-    echo "  ✓ Claude Code installed. Run 'claude' to start."
+if has "libreoffice"; then
+    echo "  Installing LibreOffice..."
+    sudo pacman -S --needed --noconfirm libreoffice-fresh libreoffice-fresh-pt-br
+    echo "  ✓ LibreOffice installed."
+fi
+
+if has "obs"; then
+    echo "  Installing OBS Studio..."
+    sudo pacman -S --needed --noconfirm obs-studio
+    echo "  ✓ OBS Studio installed."
+fi
+
+if has "wine"; then
+    echo "  Installing Wine + Winetricks..."
+    sudo pacman -S --needed --noconfirm wine winetricks
+    echo "  ✓ Wine and Winetricks installed."
+fi
+
+if has "docker"; then
+    echo "  Installing Docker + Docker Compose..."
+    sudo pacman -S --needed --noconfirm docker docker-compose
+    sudo systemctl enable docker
+    sudo usermod -aG docker "$USER"
+    echo "  ✓ Docker installed. Log out and back in for group changes to take effect."
+fi
+
+if has "nodejs"; then
+    echo "  Installing Node.js + npm..."
+    sudo pacman -S --needed --noconfirm nodejs npm
+    echo "  ✓ Node.js and npm installed."
+fi
+
+if has "arduino"; then
+    echo "  Installing Arduino CLI + IDE..."
+    sudo pacman -S --needed --noconfirm arduino-cli
+    yay -S --needed --noconfirm arduino-ide-bin
+    echo "  ✓ Arduino CLI and Arduino IDE installed."
 fi
 
 # ──────────────────────────────────────────────────────────────
