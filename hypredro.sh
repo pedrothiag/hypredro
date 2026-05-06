@@ -11,6 +11,9 @@ if [[ $EUID -eq 0 ]]; then
     exit 1
 fi
 
+echo "==> Requesting sudo credentials (required only once)..."
+sudo -v
+
 # ──────────────────────────────────────────────────────────────
 # Check/install dialog (mandatory dependency)
 # ──────────────────────────────────────────────────────────────
@@ -75,6 +78,11 @@ fi
 
 has() { [[ " $CHOICES " == *" $1 "* ]]; }
 
+# Keep sudo token alive throughout the entire installation
+( while true; do sudo -v; sleep 50; done ) &
+SUDO_KEEPALIVE_PID=$!
+trap 'kill "$SUDO_KEEPALIVE_PID" 2>/dev/null' EXIT
+
 # ──────────────────────────────────────────────────────────────
 # Step 1: Configuring Pacman
 # ──────────────────────────────────────────────────────────────
@@ -107,17 +115,17 @@ sudo pacman -S --needed --noconfirm \
     ttf-liberation ttf-firacode-nerd gst-libav gst-plugins-bad gst-plugins-good \
     gst-plugins-ugly ffmpeg gstreamer xdg-desktop-portal \
     xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-desktop-portal-kde dolphin wofi hyprlock \
-    blueman hyprpolkitagent hyprpaper waybar pavucontrol cliphist wl-clipboard \
+    hyprpolkitagent hyprpaper waybar pavucontrol cliphist wl-clipboard \
     ntfs-3g gnome-disk-utility cups system-config-printer ghostscript gsfonts \
     gutenprint unzip p7zip unrar tar gzip bzip2 xz firefox flatpak zsh breeze \
     breeze5 breeze-gtk breeze-icons kvantum-qt5 adw-gtk-theme nwg-look neovim \
     python-pip qalculate-gtk evince ark kate wget xdg-user-dirs htop \
     fastfetch curl hyprland sddm dunst kitty qt5-wayland qt6-wayland uwsm \
-    xdg-user-dirs xdg-utils bluez bluez-utils bluez-tools \
-    network-manager-applet exfatprogs mpv nwg-bar grim slurp hypridle \
+    xdg-user-dirs xdg-utils blueman bluez bluez-utils bluez-tools \
+    network-manager-applet exfatprogs mpv grim slurp hypridle \
     hyprpicker power-profiles-daemon xorg-xwayland pipewire pipewire-pulse \
     pipewire-alsa wireplumber networkmanager brightnessctl gwenview archlinux-xdg-menu \
-    ttf-jetbrains-mono-nerd gcc make git ripgrep fd tree-sitter-cli kolourpaint
+    gcc make git ripgrep fd tree-sitter-cli kolourpaint
 
 # ──────────────────────────────────────────────────────────────
 # Step 3: NVIDIA (conditional)
