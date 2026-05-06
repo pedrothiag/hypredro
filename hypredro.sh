@@ -310,7 +310,11 @@ if has "python"; then
     fi
     set +u
     source ~/.venvs/default/bin/activate
-    pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu130
+    if [[ $INSTALL_NVIDIA -eq 1 ]]; then
+        pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu130
+    else
+        pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+    fi
     pip install numpy scipy pandas matplotlib scikit-learn opencv-python notebook
     deactivate
     set -u
