@@ -1,5 +1,28 @@
+#############################################################################################
+#        ,--,                                                                     
+#      ,--.'|                                                                     
+#   ,--,  | :           ,-.----.                         ,---,                    
+#,---.'|  : '           \    /  \   __  ,-.            ,---.'|  __  ,-.   ,---.   
+#|   | : _' |           |   :    |,' ,'/ /|            |   | :,' ,'/ /|  '   ,'\  
+#:   : |.'  |      .--, |   | .\ :'  | |' | ,---.      |   | |'  | |' | /   /   | 
+#|   ' '  ; :    /_ ./| .   : |: ||  |   ,'/     \   ,--.__| ||  |   ,'.   ; ,. : 
+#'   |  .'. | , ' , ' : |   |  \ :'  :  / /    /  | /   ,'   |'  :  /  '   | |: : 
+#|   | :  | '/___/ \: | |   : .  ||  | ' .    ' / |.   '  /  ||  | '   '   | .; : 
+#'   : |  : ; .  \  ' | :     |`-';  : | '   ;   /|'   ; |:  |;  : |   |   :    | 
+#|   | '  ,/   \  ;   : :   : :   |  , ; '   |  / ||   | '/  '|  , ;    \   \  /  
+#;   : ;--'     \  \  ; |   | :    ---'  |   :    ||   :    :| ---'      `----'   
+#|   ,/          :  \  \`---'.|           \   \  /  \   \  /                      
+#'---'            \  ' ;  `---`            `----'    `----'                       
+#                  `--`
+#############################################################################################
+#
+# Hypredro - Um script automatizado para instalação do Hyprland no ArchLinux
+#
+# Versão 0.2, por Pedro Thiago V. de Souza (pedrothiag)
+#
+#############################################################################################
+
 #!/usr/bin/env bash
-# hypredro.sh — Complete Hypredro environment installation on Arch Linux
 
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -7,45 +30,45 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 clear
 
 if [[ $EUID -eq 0 ]]; then
-    echo "Do not run this script as root. Use a user with sudo." >&2
+    echo "Não execute este script como root. Use um usuário com sudo." >&2
     exit 1
 fi
 
-echo "==> Requesting sudo credentials (required only once)..."
+echo "==> Solicitando credenciais sudo (necessário apenas uma vez)..."
 sudo -v
 
 # ──────────────────────────────────────────────────────────────
-# Check/install dialog (mandatory dependency)
+# Verificar/instalar dialog (dependência obrigatória)
 # ──────────────────────────────────────────────────────────────
 if ! command -v dialog &>/dev/null; then
-    echo "==> Installing dialog (required dependency)..."
+    echo "==> Instalando dialog (dependência necessária)..."
     sudo pacman -S --needed --noconfirm dialog
 fi
 
 # ──────────────────────────────────────────────────────────────
-# Welcome
+# Boas-vindas
 # ──────────────────────────────────────────────────────────────
-dialog --title "Hypredro Installation — Arch Linux" \
-    --msgbox "\nWelcome! This script will guide you through the complete\nsetup of a Hyprland environment on Arch Linux.\n\nThe process includes:\n\n  • Pacman configuration and repositories\n  • Essential packages and Wayland environment\n  • NVIDIA drivers (optional)\n  • System services and ZSH\n  • Yay and AUR packages\n  • Fonts, Powerlevel10k theme\n  • Flatpak and final adjustments\n  • Optional packages (LaTeX, CUDA, VS Code...)\n\nBefore continuing, make sure that:\n  • You are on a clean Arch installation\n  • You have a stable internet connection\n  • The dotfiles are ready to be copied\n\nEstimated time: 30 to 90 minutes." \
+dialog --title "Instalação do Hypredro" \
+    --msgbox "\nBem-vindo! Este script guiará você pela configuração completa\nde um ambiente Hyprland no Arch Linux.\n\nO processo inclui:\n\n  • Configuração do Pacman e repositórios\n  • Pacotes essenciais e ambiente Hyprland\n  • Drivers NVIDIA (opcional)\n  • Serviços do sistema e ZSH\n  • Yay e pacotes AUR\n  • Fontes e tema Powerlevel10k\n  • Flatpak\n  • Pacotes opcionais (LaTeX, CUDA, VS Code...)\n\nAntes de continuar, certifique-se de que:\n  • Você está em uma instalação limpa do Arch\n  • Você tem uma conexão de internet estável\n  • Os dotfiles estão prontos para serem copiados\n\nTempo estimado: 30 a 90 minutos." \
     22 65
 clear
 
-dialog --title "Do you wish to continue?" \
-    --yesno "\nStart the Hypredro environment installation?" \
+dialog --title "Deseja continuar?" \
+    --yesno "\nIniciar a instalação do ambiente Hypredro?" \
     8 45
 if [[ $? -ne 0 ]]; then
     clear
-    echo "Installation cancelled by user."
+    echo "Instalação cancelada pelo usuário."
     exit 0
 fi
 clear
 
 # ──────────────────────────────────────────────────────────────
-# Initial questions — NVIDIA
+# Perguntas iniciais — NVIDIA
 # ──────────────────────────────────────────────────────────────
 INSTALL_NVIDIA=0
-dialog --title "NVIDIA Drivers" \
-    --yesno "\nDo you wish to install and configure NVIDIA packages?\n(nvidia-open-dkms, nvidia-utils, CUDA hooks, etc.)" \
+dialog --title "Drivers NVIDIA" \
+    --yesno "\nDeseja instalar e configurar os pacotes NVIDIA?\n(nvidia-open-dkms, nvidia-utils, hooks CUDA, etc.)" \
     9 55
 if [[ $? -eq 0 ]]; then
     INSTALL_NVIDIA=1
@@ -53,27 +76,27 @@ fi
 clear
 
 # ──────────────────────────────────────────────────────────────
-# Initial questions — Optional packages
+# Perguntas iniciais — Pacotes opcionais
 # ──────────────────────────────────────────────────────────────
 CHOICES=$(dialog --stdout \
-    --title "Optional Components" \
-    --checklist "Select components to install:\n(Space: check/uncheck  |  Enter: confirm  |  Esc: skip)" \
+    --title "Componentes Opcionais" \
+    --checklist "Selecione os componentes para instalar:\n(Espaço: marcar/desmarcar  |  Enter: confirmar  |  Esc: pular)" \
     28 65 15 \
-    "latex"        "LaTeX (TeX Live)"            off \
-    "cuda"         "CUDA (NVIDIA GPU)"           off \
-    "python"       "Python venv (PyTorch + ML)"  off \
-    "vscode"       "Visual Studio Code"          off \
-    "epson"        "Epson printer drivers"       off \
-    "onlyoffice"   "OnlyOffice"                  off \
-    "slack"        "Slack"                       off \
-    "steam"        "Steam"                       off \
-    "discord"      "Discord"                     off \
-    "libreoffice"  "LibreOffice (pt-BR)"         off \
-    "obs"          "OBS Studio"                  off \
-    "wine"         "Wine + Winetricks"           off \
-    "docker"       "Docker + Docker Compose"     off \
-    "nodejs"       "Node.js + npm"               off \
-    "arduino"      "Arduino CLI + IDE"           off)
+    "latex"        "LaTeX (TeX Live)"                   off \
+    "cuda"         "CUDA (GPU NVIDIA)"                  off \
+    "python"       "Ambiente virtual Pytho"             off \
+    "vscode"       "Visual Studio Code"                 off \
+    "epson"        "Drivers de impressora Epson"        off \
+    "onlyoffice"   "OnlyOffice"                         off \
+    "slack"        "Slack"                              off \
+    "steam"        "Steam"                              off \
+    "discord"      "Discord"                            off \
+    "libreoffice"  "LibreOffice (pt-BR)"                off \
+    "obs"          "OBS Studio"                         off \
+    "wine"         "Wine + Winetricks"                  off \
+    "docker"       "Docker + Docker Compose"            off \
+    "nodejs"       "Node.js + npm"                      off \
+    "arduino"      "Arduino CLI + IDE"                  off)
 DIALOG_STATUS=$?
 clear
 
@@ -83,16 +106,16 @@ fi
 
 has() { [[ " $CHOICES " == *" $1 "* ]]; }
 
-# Keep sudo token alive throughout the entire installation
+# Manter o token sudo ativo durante toda a instalação
 ( while true; do sudo -v; sleep 50; done ) &
 SUDO_KEEPALIVE_PID=$!
 trap 'kill "$SUDO_KEEPALIVE_PID" 2>/dev/null' EXIT
 
 # ──────────────────────────────────────────────────────────────
-# Step 1: Configuring Pacman
+# Passo 1: Configurando o Pacman
 # ──────────────────────────────────────────────────────────────
 echo ""
-echo " [01/09] ==> Configuring Package Manager..."
+echo " [01/09] ==> Configurando o Gerenciador de Pacotes..."
 echo ""
 
 sudo sed -i '/^#\[multilib\]/{N;s/#\[multilib\]\n#Include/[multilib]\nInclude/}' /etc/pacman.conf
@@ -105,15 +128,15 @@ elif ! grep -q '^ParallelDownloads' /etc/pacman.conf; then
 fi
 
 echo ""
-echo "==> Updating Package Manager..."
+echo "==> Atualizando o Gerenciador de Pacotes..."
 echo ""
 sudo pacman -Syu --noconfirm
 
 # ──────────────────────────────────────────────────────────────
-# Step 2: Basic Packages
+# Passo 2: Pacotes Básicos
 # ──────────────────────────────────────────────────────────────
 echo ""
-echo " [02/09] ==> Installing Basic Packages..."
+echo " [02/09] ==> Instalando Pacotes Básicos..."
 echo ""
 sudo pacman -S --needed --noconfirm \
     git github-cli base-devel ttf-font-awesome ttf-dejavu noto-fonts noto-fonts-emoji \
@@ -133,10 +156,10 @@ sudo pacman -S --needed --noconfirm \
     gcc make git ripgrep fd tree-sitter-cli kolourpaint
 
 # ──────────────────────────────────────────────────────────────
-# Step 3: NVIDIA (conditional)
+# Passo 3: NVIDIA
 # ──────────────────────────────────────────────────────────────
 echo ""
-echo " [03/09] ==> Configuring NVIDIA packages..."
+echo " [03/09] ==> Configurando pacotes NVIDIA..."
 echo ""
 
 if [[ $INSTALL_NVIDIA -eq 1 ]]; then
@@ -165,7 +188,7 @@ Target=linux-zen
 Target=linux-hardened
 
 [Action]
-Description=Updating initramfs after NVIDIA update...
+Description=Atualizando o initramfs após atualização do NVIDIA...
 Depends=mkinitcpio
 When=PostTransaction
 NeedsTargets
@@ -173,16 +196,16 @@ Exec=/usr/bin/mkinitcpio -P
 EOF
 
     sudo mkinitcpio -P
-    echo "  ✓ NVIDIA configuration complete."
+    echo "  ✓ Configuração do NVIDIA concluída."
 else
-    echo "  Skipping NVIDIA configuration."
+    echo "  Ignorando a configuração do NVIDIA."
 fi
 
 # ──────────────────────────────────────────────────────────────
-# Step 4: System services
+# Passo 4: Serviços do sistema
 # ──────────────────────────────────────────────────────────────
 echo ""
-echo " [04/09] ==> Enabling services..."
+echo " [04/09] ==> Habilitando serviços..."
 echo ""
 sudo systemctl enable NetworkManager
 sudo systemctl enable bluetooth
@@ -191,37 +214,37 @@ sudo systemctl enable cups.socket
 sudo systemctl enable power-profiles-daemon
 
 # ──────────────────────────────────────────────────────────────
-# Step 5: User directories
+# Passo 5: Diretórios do usuário
 # ──────────────────────────────────────────────────────────────
 echo ""
-echo " [05/09] ==> Creating user directories..."
+echo " [05/09] ==> Criando diretórios do usuário..."
 echo ""
 xdg-user-dirs-update
 
 # ──────────────────────────────────────────────────────────────
-# Step 6: Dotfiles
+# Passo 6: Dotfiles
 # ──────────────────────────────────────────────────────────────
 echo ""
-echo " [06/09] ==> Copying configuration files..."
+echo " [06/09] ==> Copiando arquivos de configuração..."
 echo ""
 
 if [[ -d "$SCRIPT_DIR/.config" ]]; then
     cp -rv "$SCRIPT_DIR/.config/." ~/.config/
 else
-    echo "  Warning: $SCRIPT_DIR/.config not found. Skipping dotfiles."
+    echo "  Aviso: $SCRIPT_DIR/.config não encontrado. Ignorando dotfiles."
 fi
 
 if [[ -f "$SCRIPT_DIR/.gtkrc-2.0" ]]; then
     cp -v "$SCRIPT_DIR/.gtkrc-2.0" ~/
 else
-    echo "  Warning: $SCRIPT_DIR/.gtkrc-2.0 not found. Skipping."
+    echo "  Aviso: $SCRIPT_DIR/.gtkrc-2.0 não encontrado. Ignorando."
 fi
 
 # ──────────────────────────────────────────────────────────────
-# Step 7: ZSH
+# Passo 7: ZSH
 # ──────────────────────────────────────────────────────────────
 echo ""
-echo " [07/09] ==> Configuring ZSH..."
+echo " [07/09] ==> Configurando ZSH..."
 echo ""
 
 set +u
@@ -241,17 +264,17 @@ ZSH_CUSTOM_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 sed -i 's/^plugins=(git)$/plugins=(git archlinux zsh-autosuggestions zsh-syntax-highlighting)/' ~/.zshrc
 
 sudo chsh -s "$(which zsh)" "$USER" || \
-    echo "  Warning: failed to change shell. Run manually: chsh -s $(which zsh)"
+    echo "  Aviso: falha ao alterar o shell. Execute manualmente: chsh -s $(which zsh)"
 
 # ──────────────────────────────────────────────────────────────
-# Step 8: Yay, fonts and essential AUR packages
+# Passo 8: Yay, fontes e pacotes AUR essenciais
 # ──────────────────────────────────────────────────────────────
 echo ""
-echo " [08/09] ==> Installing yay and essential AUR packages..."
+echo " [08/09] ==> Instalando yay e pacotes AUR essenciais..."
 echo ""
 
 if command -v yay &>/dev/null; then
-    echo "  yay is already installed. Skipping."
+    echo "  yay já está instalado. Ignorando."
 else
     rm -rf /tmp/yay-build
     git clone https://aur.archlinux.org/yay.git /tmp/yay-build
@@ -269,47 +292,47 @@ yay -S --needed --noconfirm \
     qt6ct-kde
 
 echo ""
-echo "  Installing Powerlevel10k theme..."
+echo "  Instalando o tema Powerlevel10k..."
 
 if [[ -d "$HOME/powerlevel10k" ]]; then
-    echo "  ~/powerlevel10k already exists. Skipping clone."
+    echo "  ~/powerlevel10k já existe. Ignorando clone."
 else
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
 fi
 
 if ! grep -q "powerlevel10k/powerlevel10k.zsh-theme" ~/.zshrc 2>/dev/null; then
     echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
-    echo "  ✓ Powerlevel10k registered in ~/.zshrc"
+    echo "  ✓ Powerlevel10k registrado em ~/.zshrc"
 else
-    echo "  Powerlevel10k is already in ~/.zshrc. Skipping."
+    echo "  Powerlevel10k já está em ~/.zshrc. Ignorando."
 fi
 
 # ──────────────────────────────────────────────────────────────
-# Step 9: Optional components
+# Passo 9: Componentes opcionais
 # ──────────────────────────────────────────────────────────────
 echo ""
-echo " [09/09] ==> Installing selected optional components..."
+echo " [09/09] ==> Instalando componentes opcionais selecionados..."
 echo ""
 
 if has "latex"; then
-    echo "  Installing LaTeX..."
+    echo "  Instalando LaTeX..."
     sudo pacman -S --needed --noconfirm \
         texlive-basic texlive-latex texlive-latexrecommended texlive-latexextra \
         texlive-fontsrecommended texlive-fontsextra texlive-langportuguese \
         texlive-pictures texlive-mathscience texlive-binextra texlive-plaingeneric
-    echo "  ✓ LaTeX installed."
+    echo "  ✓ LaTeX instalado."
 fi
 
 if has "cuda"; then
-    echo "  Installing CUDA..."
+    echo "  Instalando CUDA..."
     sudo pacman -S --needed --noconfirm cuda
-    echo "  ✓ CUDA installed."
+    echo "  ✓ CUDA instalado."
 fi
 
 if has "python"; then
-    echo "  Setting up Python virtual environment..."
+    echo "  Configurando ambiente virtual Python..."
     if [[ -d "$HOME/.venvs/default" ]]; then
-        echo "  Venv ~/.venvs/default already exists. Skipping creation."
+        echo "  O venv ~/.venvs/default já existe. Ignorando criação."
     else
         python3 -m venv ~/.venvs/default/
     fi
@@ -326,94 +349,94 @@ if has "python"; then
     if ! grep -q "alias startpython=" ~/.zshrc 2>/dev/null; then
         echo "alias startpython='source ~/.venvs/default/bin/activate'" >> ~/.zshrc
     fi
-    echo "  ✓ Python environment configured at ~/.venvs/default"
+    echo "  ✓ Ambiente Python configurado em ~/.venvs/default"
 fi
 
 if has "vscode"; then
-    echo "  Installing Visual Studio Code..."
+    echo "  Instalando Visual Studio Code..."
     yay -S --needed --noconfirm visual-studio-code-bin
-    echo "  ✓ VS Code installed."
+    echo "  ✓ VS Code instalado."
 fi
 
 if has "epson"; then
-    echo "  Installing Epson printer drivers..."
+    echo "  Instalando drivers de impressora Epson..."
     yay -S --needed --noconfirm epson-inkjet-printer-escpr
-    echo "  ✓ Epson drivers installed."
+    echo "  ✓ Drivers Epson instalados."
 fi
 
 if has "onlyoffice"; then
-    echo "  Installing OnlyOffice..."
+    echo "  Instalando OnlyOffice..."
     yay -S --needed --noconfirm onlyoffice-bin
-    echo "  ✓ OnlyOffice installed."
+    echo "  ✓ OnlyOffice instalado."
 fi
 
 if has "slack"; then
-    echo "  Installing Slack..."
+    echo "  Instalando Slack..."
     yay -S --needed --noconfirm slack-desktop
-    echo "  ✓ Slack installed."
+    echo "  ✓ Slack instalado."
 fi
 
 if has "steam"; then
-    echo "  Installing Steam..."
+    echo "  Instalando Steam..."
     sudo pacman -S --needed --noconfirm steam
-    echo "  ✓ Steam installed."
+    echo "  ✓ Steam instalado."
 fi
 
 if has "discord"; then
-    echo "  Installing Discord..."
+    echo "  Instalando Discord..."
     sudo pacman -S --needed --noconfirm discord
-    echo "  ✓ Discord installed."
+    echo "  ✓ Discord instalado."
 fi
 
 if has "libreoffice"; then
-    echo "  Installing LibreOffice..."
+    echo "  Instalando LibreOffice..."
     sudo pacman -S --needed --noconfirm libreoffice-fresh libreoffice-fresh-pt-br
-    echo "  ✓ LibreOffice installed."
+    echo "  ✓ LibreOffice instalado."
 fi
 
 if has "obs"; then
-    echo "  Installing OBS Studio..."
+    echo "  Instalando OBS Studio..."
     sudo pacman -S --needed --noconfirm obs-studio
-    echo "  ✓ OBS Studio installed."
+    echo "  ✓ OBS Studio instalado."
 fi
 
 if has "wine"; then
-    echo "  Installing Wine + Winetricks..."
+    echo "  Instalando Wine + Winetricks..."
     sudo pacman -S --needed --noconfirm wine winetricks
-    echo "  ✓ Wine and Winetricks installed."
+    echo "  ✓ Wine e Winetricks instalados."
 fi
 
 if has "docker"; then
-    echo "  Installing Docker + Docker Compose..."
+    echo "  Instalando Docker + Docker Compose..."
     sudo pacman -S --needed --noconfirm docker docker-compose
     sudo systemctl enable docker
     sudo usermod -aG docker "$USER"
-    echo "  ✓ Docker installed. Log out and back in for group changes to take effect."
+    echo "  ✓ Docker instalado. Saia e entre novamente para que as alterações de grupo tenham efeito."
 fi
 
 if has "nodejs"; then
-    echo "  Installing Node.js + npm..."
+    echo "  Instalando Node.js + npm..."
     sudo pacman -S --needed --noconfirm nodejs npm
-    echo "  ✓ Node.js and npm installed."
+    echo "  ✓ Node.js e npm instalados."
 fi
 
 if has "arduino"; then
-    echo "  Installing Arduino CLI + IDE..."
+    echo "  Instalando Arduino CLI + IDE..."
     sudo pacman -S --needed --noconfirm arduino-cli
     yay -S --needed --noconfirm arduino-ide-bin
-    echo "  ✓ Arduino CLI and Arduino IDE installed."
+    echo "  ✓ Arduino CLI e Arduino IDE instalados."
 fi
 
 # ──────────────────────────────────────────────────────────────
 # Flathub
 # ──────────────────────────────────────────────────────────────
 echo ""
-echo "==> Adding Flathub repository..."
+echo "==> Adicionando repositório Flathub..."
 echo ""
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 # ──────────────────────────────────────────────────────────────
-# Final system configurations
+# Configurações finais do sistema
 # ──────────────────────────────────────────────────────────────
 gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
 gsettings set org.gnome.desktop.interface icon-theme 'breeze-dark'
@@ -425,21 +448,21 @@ kbuildsycoca6 --noincremental --track menu
 xdg-mime default org.kde.kate.desktop text/plain
 
 # ──────────────────────────────────────────────────────────────
-# Completion
+# Conclusão
 # ──────────────────────────────────────────────────────────────
-dialog --title "Installation complete!" \
-    --msgbox "\nAll components have been installed successfully!\n\nReminders:\n  • Reload your shell to use the new aliases\n    and the Powerlevel10k theme (or open a new terminal)\n  • On first zsh execution, the Powerlevel10k\n    wizard will start automatically. If not,\n    run: p10k configure\n  • Configure your services (Slack, Discord, etc.)\n    with your credentials when opening them for the first time\n\nEnjoy your new Hyprland environment!" \
+dialog --title "Instalação concluída!" \
+    --msgbox "\nTodos os componentes foram instalados com sucesso!\n\nLembretes:\n  • Recarregue seu shell para usar os novos aliases\n    e o tema Powerlevel10k (ou abra um novo terminal)\n  • Na primeira execução do zsh, o assistente do\n    Powerlevel10k iniciará automaticamente. Se não,\n    execute: p10k configure\n  • Configure seus serviços (Slack, Discord, etc.)\n    com suas credenciais ao abri-los pela primeira vez\n\nAproveite seu novo ambiente Hyprland!" \
     20 60
 clear
 
-dialog --title "Restart" \
-    --yesno "\nDo you wish to restart the computer now?" \
+dialog --title "Reiniciar" \
+    --yesno "\nDeseja reiniciar o computador agora?" \
     8 45
 if [[ $? -eq 0 ]]; then
     clear
     sudo reboot
 else
     clear
-    echo "Remember to restart your computer before starting Hyprland!"
+    echo "Lembre-se de reiniciar o computador antes de iniciar o Hyprland!"
     echo ""
 fi
