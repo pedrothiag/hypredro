@@ -164,7 +164,7 @@ echo ""
 
 if [[ $INSTALL_NVIDIA -eq 1 ]]; then
     sudo pacman -S --needed --noconfirm \
-        linux-headers nvidia-open-dkms nvidia-utils egl-wayland \
+        linux-headers nvidia-open nvidia-utils egl-wayland \
         libva-nvidia-driver lib32-nvidia-utils nvidia-settings
 
     sudo sed -i 's/^MODULES=(.*)/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
@@ -181,7 +181,7 @@ Operation=Install
 Operation=Upgrade
 Operation=Remove
 Type=Package
-Target=nvidia-open-dkms
+Target=nvidia-open
 Target=linux
 Target=linux-lts
 Target=linux-zen
