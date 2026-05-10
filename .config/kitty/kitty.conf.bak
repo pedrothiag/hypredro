@@ -27,7 +27,7 @@ bold_italic_font auto
 #: <https://sw.kovidgoyal.net/kitty/kittens/choose-fonts/#font-spec-
 #: syntax>.
 
-# font_size 11.0
+font_size 13.0
 
 #: Font size (in pts).
 
@@ -1157,7 +1157,7 @@ bold_italic_font auto
 #: set the vertical and horizontal sides. Three values set top,
 #: horizontal and bottom. Four values set top, right, bottom and left.
 
-# window_padding_width 0
+window_padding_width 4
 
 #: The window padding (in pts) (blank area between the text and the
 #: window border). A single value sets all four sides. Two values set
@@ -1588,7 +1588,7 @@ bold_italic_font auto
 #: Color scheme {{{
 
 # foreground #dddddd
-# background #000000
+# background #11111b
 
 #: The foreground and background colors.
 
@@ -3156,3 +3156,9 @@ bold_italic_font auto
 #: }}}
 
 #: }}}
+
+
+# BEGIN_KITTY_THEME
+# Flexoki (Dark)
+include current-theme.conf
+# END_KITTY_THEME

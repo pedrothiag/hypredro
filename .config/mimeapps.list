@@ -1,0 +1,7 @@
+[Added Associations]
+image/jpeg=org.kde.gwenview.desktop;
+
+[Default Applications]
+image/jpeg=org.kde.gwenview.desktop;
+text/plain=org.kde.kate.desktop
+x-scheme-handler/slack=slack.desktop
