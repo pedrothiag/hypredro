@@ -29,6 +29,25 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 clear
 
+cat << 'EOF'
+       ,--,
+     ,--.'|
+  ,--,  | :           ,-.----.                         ,---,
+,---.'|  : '           \    /  \   __  ,-.            ,---.'|  __  ,-.   ,---.
+|   | : _' |           |   :    |,' ,'/ /|            |   | :,' ,'/ /|  '   ,'\
+:   : |.'  |      .--, |   | .\ :'  | |' | ,---.      |   | |'  | |' | /   /   |
+|   ' '  ; :    /_ ./| .   : |: ||  |   ,'/     \   ,--.__| ||  |   ,'.   ; ,. :
+'   |  .'. | , ' , ' : |   |  \ :'  :  / /    /  | /   ,'   |'  :  /  '   | |: :
+|   | :  | '/___/ \: | |   : .  ||  | ' .    ' / |.   '  /  ||  | '   '   | .; :
+'   : |  : ; .  \  ' | :     |`-';  : | '   ;   /|'   | |:  |;  : |   |   :    |
+|   | '  ,/   \  ;   : :   : :   |  , ; '   |  / ||   | '/  '|  , ;    \   \  /
+;   : ;--'     \  \  ; |   | :    ---'  |   :    ||   :    :| ---'      `----'
+|   ,/          :  \  \`---'.|           \   \  /  \   \  /
+'---'            \  ' ;  `---`            `----'    `----'
+                  `--`
+
+EOF
+
 if [[ $EUID -eq 0 ]]; then
     echo "Não execute este script como root. Use um usuário com sudo." >&2
     exit 1
@@ -49,14 +68,13 @@ fi
 # Boas-vindas
 # ──────────────────────────────────────────────────────────────
 dialog --title "Instalação do Hypredro" \
-    --msgbox "\nBem-vindo! Este script guiará você pela configuração completa\nde um ambiente Hyprland no Arch Linux.\n\nO processo inclui:\n\n  • Configuração do Pacman e repositórios\n  • Pacotes essenciais e ambiente Hyprland\n  • Drivers NVIDIA (opcional)\n  • Serviços do sistema e ZSH\n  • Yay e pacotes AUR\n  • Fontes e tema Powerlevel10k\n  • Flatpak\n  • Pacotes opcionais (LaTeX, CUDA, VS Code...)\n\nAntes de continuar, certifique-se de que:\n  • Você está em uma instalação limpa do Arch\n  • Você tem uma conexão de internet estável\n  • Os dotfiles estão prontos para serem copiados\n\nTempo estimado: 30 a 90 minutos." \
+    --msgbox "\nBem-vindo! Este script guiará você pela configuração completa\nde um ambiente Hyprland no Arch Linux.\n\nO processo inclui:\n\n  • Configuração do Pacman e repositórios\n  • Pacotes essenciais e ambiente Hyprland\n  • Drivers NVIDIA (opcional)\n  • Serviços do sistema e ZSH\n  • Yay e pacotes AUR\n  • Fontes e tema Powerlevel10k\n  • Flatpak\n  • Pacotes opcionais por categoria (6 telas)\n\nAntes de continuar, certifique-se de que:\n  • Você está em uma instalação limpa do Arch\n  • Você tem uma conexão de internet estável\n  • Os dotfiles estão prontos para serem copiados\n\nTempo estimado: 30 a 90 minutos." \
     22 65
 clear
 
-dialog --title "Deseja continuar?" \
+if ! dialog --title "Deseja continuar?" \
     --yesno "\nIniciar a instalação do ambiente Hypredro?" \
-    8 45
-if [[ $? -ne 0 ]]; then
+    8 45; then
     clear
     echo "Instalação cancelada pelo usuário."
     exit 0
@@ -67,10 +85,9 @@ clear
 # Perguntas iniciais — NVIDIA
 # ──────────────────────────────────────────────────────────────
 INSTALL_NVIDIA=0
-dialog --title "Drivers NVIDIA" \
+if dialog --title "Drivers NVIDIA" \
     --yesno "\nDeseja instalar e configurar os pacotes NVIDIA?\n(nvidia-open-dkms, nvidia-utils, hooks CUDA, etc.)" \
-    9 55
-if [[ $? -eq 0 ]]; then
+    9 55; then
     INSTALL_NVIDIA=1
 fi
 clear
@@ -78,33 +95,102 @@ clear
 # ──────────────────────────────────────────────────────────────
 # Perguntas iniciais — Pacotes opcionais
 # ──────────────────────────────────────────────────────────────
-CHOICES=$(dialog --stdout \
-    --title "Componentes Opcionais" \
-    --checklist "Selecione os componentes para instalar:\n(Espaço: marcar/desmarcar  |  Enter: confirmar  |  Esc: pular)" \
-    28 65 15 \
-    "latex"        "LaTeX (TeX Live)"                   off \
-    "cuda"         "CUDA (GPU NVIDIA)"                  off \
-    "python"       "Ambiente virtual Pytho"             off \
-    "vscode"       "Visual Studio Code"                 off \
-    "epson"        "Drivers de impressora Epson"        off \
-    "onlyoffice"   "OnlyOffice"                         off \
-    "slack"        "Slack"                              off \
-    "steam"        "Steam"                              off \
-    "discord"      "Discord"                            off \
-    "libreoffice"  "LibreOffice (pt-BR)"                off \
-    "obs"          "OBS Studio"                         off \
-    "wine"         "Wine + Winetricks"                  off \
-    "docker"       "Docker + Docker Compose"            off \
-    "nodejs"       "Node.js + npm"                      off \
-    "arduino"      "Arduino CLI + IDE"                  off)
-DIALOG_STATUS=$?
+CHOICES_DEV=$(dialog --stdout \
+    --title "Pacotes Opcionais — Desenvolvimento  [1/6]" \
+    --checklist "Selecione os pacotes de desenvolvimento:\n(Espaço: marcar/desmarcar  |  Enter: confirmar  |  Esc: pular)" \
+    15 65 5 \
+    "vscode"   "Visual Studio Code"        off \
+    "docker"   "Docker + Docker Compose"   off \
+    "nodejs"   "Node.js + npm"             off \
+    "arduino"  "Arduino CLI + IDE"         off \
+    "python"   "Ambiente virtual Python"   off) || CHOICES_DEV=""
 clear
 
-if [[ $DIALOG_STATUS -ne 0 ]]; then
-    CHOICES=""
-fi
+CHOICES_SCI=$(dialog --stdout \
+    --title "Pacotes Opcionais — Ciência / IA  [2/6]" \
+    --checklist "Selecione os pacotes científicos:\n(Espaço: marcar/desmarcar  |  Enter: confirmar  |  Esc: pular)" \
+    12 65 2 \
+    "latex"  "LaTeX (TeX Live)"   off \
+    "cuda"   "CUDA (GPU NVIDIA)"  off) || CHOICES_SCI=""
+clear
+
+CHOICES_OFF=$(dialog --stdout \
+    --title "Pacotes Opcionais — Escritório  [3/6]" \
+    --checklist "Selecione os pacotes de escritório:\n(Espaço: marcar/desmarcar  |  Enter: confirmar  |  Esc: pular)" \
+    12 65 2 \
+    "libreoffice"  "LibreOffice (pt-BR)"  off \
+    "onlyoffice"   "OnlyOffice"           off) || CHOICES_OFF=""
+clear
+
+CHOICES_DES=$(dialog --stdout \
+    --title "Pacotes Opcionais — Design & Mídia  [4/6]" \
+    --checklist "Selecione os pacotes de design e mídia:\n(Espaço: marcar/desmarcar  |  Enter: confirmar  |  Esc: pular)" \
+    13 65 3 \
+    "inkscape"  "Inkscape"    off \
+    "gimp"      "GIMP"        off \
+    "obs"       "OBS Studio"  off) || CHOICES_DES=""
+clear
+
+CHOICES_ENT=$(dialog --stdout \
+    --title "Pacotes Opcionais — Comunicação & Entretenimento  [5/6]" \
+    --checklist "Selecione os pacotes de comunicação e entretenimento:\n(Espaço: marcar/desmarcar  |  Enter: confirmar  |  Esc: pular)" \
+    14 65 4 \
+    "slack"    "Slack"             off \
+    "discord"  "Discord"           off \
+    "steam"    "Steam"             off \
+    "wine"     "Wine + Winetricks" off) || CHOICES_ENT=""
+clear
+
+CHOICES_HW=$(dialog --stdout \
+    --title "Pacotes Opcionais — Hardware  [6/6]" \
+    --checklist "Selecione os pacotes de hardware:\n(Espaço: marcar/desmarcar  |  Enter: confirmar  |  Esc: pular)" \
+    11 65 1 \
+    "epson"  "Drivers de impressora Epson"  off) || CHOICES_HW=""
+clear
+
+CHOICES="$CHOICES_DEV $CHOICES_SCI $CHOICES_OFF $CHOICES_DES $CHOICES_ENT $CHOICES_HW"
 
 has() { [[ " $CHOICES " == *" $1 "* ]]; }
+
+# ──────────────────────────────────────────────────────────────
+# Confirmação dos pacotes opcionais selecionados
+# ──────────────────────────────────────────────────────────────
+declare -A _PKG_LABEL=(
+    ["vscode"]="Visual Studio Code"
+    ["docker"]="Docker + Docker Compose"
+    ["nodejs"]="Node.js + npm"
+    ["arduino"]="Arduino CLI + IDE"
+    ["python"]="Ambiente virtual Python"
+    ["latex"]="LaTeX (TeX Live)"
+    ["cuda"]="CUDA (GPU NVIDIA)"
+    ["libreoffice"]="LibreOffice (pt-BR)"
+    ["onlyoffice"]="OnlyOffice"
+    ["inkscape"]="Inkscape"
+    ["gimp"]="GIMP"
+    ["obs"]="OBS Studio"
+    ["slack"]="Slack"
+    ["discord"]="Discord"
+    ["steam"]="Steam"
+    ["wine"]="Wine + Winetricks"
+    ["epson"]="Drivers de impressora Epson"
+)
+
+_OPT_SUMMARY=""
+for _pkg in vscode docker nodejs arduino python latex cuda libreoffice onlyoffice \
+            inkscape gimp obs slack discord steam wine epson; do
+    has "$_pkg" && _OPT_SUMMARY+="  • ${_PKG_LABEL[$_pkg]}\n"
+done
+[[ -z "$_OPT_SUMMARY" ]] && _OPT_SUMMARY="  (nenhum pacote opcional selecionado)\n"
+
+if ! dialog --title "Confirmar instalação" \
+    --yesno "\nPacotes opcionais que serão instalados:\n\n${_OPT_SUMMARY}\nTudo certo? Confirme para iniciar a instalação." \
+    22 62; then
+    clear
+    echo "Instalação cancelada pelo usuário."
+    exit 0
+fi
+clear
+unset _PKG_LABEL _OPT_SUMMARY _pkg
 
 # Manter o token sudo ativo durante toda a instalação
 ( while true; do sudo -v; sleep 50; done ) &
@@ -467,6 +553,18 @@ if has "arduino"; then
     sudo pacman -S --needed --noconfirm arduino-cli
     yay -S --needed --noconfirm arduino-ide-bin
     echo "  ✓ Arduino CLI e Arduino IDE instalados."
+fi
+
+if has "inkscape"; then
+    echo "  Instalando Inkscape..."
+    sudo pacman -S --needed --noconfirm inkscape
+    echo "  ✓ Inkscape instalado."
+fi
+
+if has "gimp"; then
+    echo "  Instalando GIMP..."
+    sudo pacman -S --needed --noconfirm gimp
+    echo "  ✓ GIMP instalado."
 fi
 
 # ──────────────────────────────────────────────────────────────
