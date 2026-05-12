@@ -138,22 +138,64 @@ sudo pacman -Syu --noconfirm
 echo ""
 echo " [02/09] ==> Instalando Pacotes Básicos..."
 echo ""
-sudo pacman -S --needed --noconfirm \
-    git github-cli base-devel ttf-font-awesome ttf-dejavu noto-fonts noto-fonts-emoji \
-    ttf-liberation ttf-firacode-nerd gst-libav gst-plugins-bad gst-plugins-good \
-    gst-plugins-ugly ffmpeg gstreamer xdg-desktop-portal \
-    xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-desktop-portal-kde dolphin wofi hyprlock \
-    hyprpolkitagent hyprpaper waybar pavucontrol cliphist wl-clipboard \
-    ntfs-3g gnome-disk-utility cups system-config-printer ghostscript gsfonts \
-    gutenprint unzip p7zip unrar tar gzip bzip2 xz firefox flatpak zsh breeze \
-    breeze5 breeze-gtk breeze-icons kvantum-qt5 adw-gtk-theme nwg-look neovim \
-    python-pip qalculate-gtk evince ark kate wget xdg-user-dirs htop \
-    fastfetch curl hyprland sddm dunst kitty qt5-wayland qt6-wayland uwsm \
-    xdg-user-dirs xdg-utils blueman bluez bluez-utils bluez-tools \
-    network-manager-applet exfatprogs mpv grim slurp hypridle \
-    hyprpicker power-profiles-daemon xorg-xwayland pipewire pipewire-pulse \
-    pipewire-alsa wireplumber networkmanager brightnessctl gwenview archlinux-xdg-menu \
-    gcc make git ripgrep fd tree-sitter-cli kolourpaint
+
+# Sistema base / dev tools
+sudo pacman -S --needed --noconfirm base-devel gcc make git github-cli neovim python-pip \
+    ripgrep fd tree-sitter-cli
+
+# Compositor / sessão Wayland
+sudo pacman -S --needed --noconfirm hyprland sddm uwsm xorg-xwayland qt5-wayland qt6-wayland
+
+# Componentes do desktop Hyprland
+sudo pacman -S --needed --noconfirm waybar wofi hyprlock hyprpaper hypridle hyprpicker \
+    hyprpolkitagent dunst kitty cliphist wl-clipboard
+
+# XDG / portals
+sudo pacman -S --needed --noconfirm xdg-desktop-portal xdg-desktop-portal-hyprland \
+    xdg-desktop-portal-gtk xdg-desktop-portal-kde \
+    xdg-user-dirs xdg-utils archlinux-xdg-menu
+
+# Áudio (PipeWire)
+sudo pacman -S --needed --noconfirm pipewire pipewire-pulse pipewire-alsa wireplumber pavucontrol
+
+# Bluetooth
+sudo pacman -S --needed --noconfirm bluez bluez-utils bluez-tools blueman
+
+# Rede
+sudo pacman -S --needed --noconfirm networkmanager network-manager-applet
+
+# Energia / brilho
+sudo pacman -S --needed --noconfirm power-profiles-daemon brightnessctl
+
+# Screenshots
+sudo pacman -S --needed --noconfirm grim slurp
+
+# Temas / aparência
+sudo pacman -S --needed --noconfirm breeze breeze5 breeze-gtk breeze-icons \
+    kvantum-qt5 adw-gtk-theme nwg-look
+
+# Fontes
+sudo pacman -S --needed --noconfirm ttf-dejavu ttf-liberation ttf-firacode-nerd \
+    ttf-font-awesome noto-fonts noto-fonts-emoji
+
+# Multimídia / codecs
+sudo pacman -S --needed --noconfirm gstreamer gst-libav gst-plugins-good gst-plugins-bad gst-plugins-ugly \
+    ffmpeg mpv
+
+# Impressão
+sudo pacman -S --needed --noconfirm cups system-config-printer ghostscript gsfonts gutenprint
+
+# Filesystems / discos
+sudo pacman -S --needed --noconfirm ntfs-3g exfatprogs gnome-disk-utility
+
+# Arquivos compactados
+sudo pacman -S --needed --noconfirm tar gzip bzip2 xz unzip p7zip unrar ark
+
+# Aplicativos KDE/GTK
+sudo pacman -S --needed --noconfirm dolphin kate gwenview evince qalculate-gtk kolourpaint
+
+# Outros / utilitários
+sudo pacman -S --needed --noconfirm firefox flatpak zsh wget curl htop fastfetch
 
 # ──────────────────────────────────────────────────────────────
 # Passo 3: NVIDIA

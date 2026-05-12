@@ -1,7 +1,9 @@
 [Added Associations]
+application/pdf=org.gnome.Evince.desktop;
 image/jpeg=org.kde.gwenview.desktop;
 
 [Default Applications]
+application/pdf=org.gnome.Evince.desktop;
 image/jpeg=org.kde.gwenview.desktop;
 text/plain=org.kde.kate.desktop
 x-scheme-handler/slack=slack.desktop

@@ -1,13 +1,13 @@
 // -*- mode: jsonc -*-
 {
     "layer": "top", // Waybar at top layer
-    "position": "bottom", // Waybar position (top|bottom|left|right)
+    "position": "top", // Waybar position (top|bottom|left|right)
     "height": 38, // Waybar height (to be removed for auto height)
     "spacing": 0, // Gaps between modules (4px)
     
     "modules-left": [
-	    "hyprland/workspaces"
-        //"wlr/taskbar"
+	    "hyprland/workspaces",
+        "hyprland/window",
     ],
     //"modules-center": [
 	//    "wlr/taskbar"
@@ -27,14 +27,14 @@
 	    "persistent-workspaces": {
 	        "*": 4
 	    },
-        "format": "{icon} {windows}",
+        "format": "{icon}{windows}",
         "format-window-separator": "",
         //Configuração para apresentar as janelas ao lado de indicador de área de trabalho
         "workspace-taskbar": {
             "enable": true,
             "update-active-window": true,
             "format": "{icon}",
-            "icon-size": 20
+            "icon-size": 21
         },
         "on-scroll-up": "hyprctl dispatch workspace e+1",
         "on-scroll-down": "hyprctl dispatch workspace e-1"
@@ -69,7 +69,8 @@
 	"locale": "pt_BR.utf8",
         "timezone": "America/Sao_Paulo",
         "tooltip-format": "<tt>{calendar}</tt>",
-        "format": "<small>     {:%H:%M\n%d/%m/%Y}</small>",
+        "format": "{:L%a %d %b %H:%M}",
+        "locale": "pt_BR.utf8",
     	"calendar": {
         	"mode": "month",
         	"mode-mon-col": 3,
