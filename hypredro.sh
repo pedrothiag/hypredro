@@ -278,7 +278,7 @@ sudo pacman -S --needed --noconfirm ntfs-3g exfatprogs gnome-disk-utility
 sudo pacman -S --needed --noconfirm tar gzip bzip2 xz unzip p7zip unrar ark
 
 # Aplicativos KDE/GTK
-sudo pacman -S --needed --noconfirm dolphin kate gwenview evince qalculate-gtk kolourpaint
+sudo pacman -S --needed --noconfirm dolphin kate gwenview evince qalculate-gtk kolourpaint gnome-calendar
 
 # Outros / utilitários
 sudo pacman -S --needed --noconfirm firefox flatpak zsh wget curl htop fastfetch
