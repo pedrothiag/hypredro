@@ -1,5 +1,5 @@
 * {
-    font-family: "SF Pro Text", "FiraCode Nerd Font";
+    font-family: "SF Pro Text", "JetBrainsMono Nerd Font"; 
     font-weight: 600; 
     font-size: 16px;
 }
@@ -34,22 +34,33 @@ window#waybar.chromium {
     border: none;
 }
 
+/* #workspaces {
+    padding-left: 4px;
+} */
+
 #workspaces button {
     box-shadow: inset 0 -3px transparent;
     border: none;
-    border-radius: 0px;
+    border-radius: 5px;
     color: #ffffff;
+    padding-right: 8px;
+    padding-left: 12px;
+    /* margin-top: 4px; */
+    /* margin-bottom: 4px; */
+    /* background-color: #201f1e; */
+    /* padding-left: 15px; */
+    /* padding-right: 15px; */
 }
 
-/* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
 #workspaces button:hover {
-    /*background: inherit;*/
     background-color: #6f6f72;
 }
 
 #workspaces button.focused, #workspaces button.active {
-    background-color: #2e6581;
-    box-shadow: inset 0 -3px #3ba0d5;
+    /*background-color: #2e6581;*/
+    background: #3BA0D5;
+    background: linear-gradient(45deg, rgba(59, 160, 213, 0.7) 0%, rgba(0, 255, 153, 0.7) 100%);
+    /*box-shadow: inset 0 -3px #3b97c8;*/
 }
 
 #workspaces button.urgent {
@@ -58,18 +69,11 @@ window#waybar.chromium {
 
 #workspaces .taskbar-window {
     padding-left: 4px;
-    padding-right: 2px;
-}
-
-#custom-vertbar {
-    color: #cecdc3;
-    font-size: 22px;
-    font-weight: 300;
+    padding-right: 4px;
 }
 
 #taskbar button {
     border-radius: 0px;
-    /*margin-right: 4px;*/
 }
 
 #taskbar button.active {
@@ -95,11 +99,15 @@ window#waybar.chromium {
 #custom-media,
 #tray,
 #mode,
-#idle_inhibitor,
 #scratchpad,
-#power-profiles-daemon,
 #mpd {
-    padding: 0 8px;
+    padding: 0 5px;
+    color: #ffffff;
+}
+
+#idle_inhibitor,
+#power-profiles-daemon {
+    padding: 0 10px;
     color: #ffffff;
 }
 
@@ -151,4 +159,8 @@ label:focus {
 #tray > .needs-attention {
     -gtk-icon-effect: highlight;
     background-color: #eb4d4b;
+}
+
+#custom-power { 
+    padding-right: 8px;
 }
