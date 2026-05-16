@@ -1,10 +1,8 @@
 # Hypredro - Script de configuração mínima para o **Hyprland**
 
-O Hypredro é um script de instalação automatizada para uma **configuração mínima do Hyprland** no **Arch Linux**. O Hypr-edro não é um ambiente de desktop completo — ele fornece apenas o essencial para que o Hyprland funcione, com dotfiles pré-configurados e suporte opcional a NVIDIA, LaTeX, CUDA e ferramentas de desenvolvimento.
+O Hypredro é um script de instalação automatizada para uma **configuração mínima do Hyprland** no **Arch Linux**. O Hypredro não é um ambiente de desktop completo — ele fornece apenas o essencial para que o Hyprland funcione, com dotfiles pré-configurados e suporte opcional a NVIDIA, LaTeX, CUDA e ferramentas de desenvolvimento.
 
-## ❓ O que é o Hypredro?
-
-O Hypredro é um ponto de partida, não um produto acabado. Ele instala e configura o mínimo necessário para ter o Hyprland funcionando de forma utilizável, deixando o restante para o usuário personalizar conforme sua preferência. Não espere um ambiente polido e cheio de recursos — espere uma base funcional e limpa, com a possibilidade de instalação de alguns pacotes adicionais.
+O Hypredro instala e configura o mínimo necessário para ter o Hyprland funcionando de forma utilizável, deixando o restante para o usuário personalizar conforme sua preferência.
 
 ## 📋 Pré-requisitos
 
@@ -63,28 +61,3 @@ Os seguintes pacotes podem ser instalados juntamente com o ambiente:
 | Node.js + npm | `nodejs` + `npm` via pacman |
 | Arduino | `arduino-cli` via pacman + `arduino-ide-bin` via AUR |
 
-## 👥 Dotfiles incluídos
-
-```
-.config/
-├── hypr/          # Hyprland, Hyprpaper, Hyprlock, Hypridle
-├── waybar/        # Barra de status
-├── kitty/         # Emulador de terminal
-├── wofi/          # Lançador de aplicativos
-├── dunst/         # Notificações
-├── gtk-3.0/       # Tema GTK
-├── gtk-4.0/
-├── Kvantum/       # Tema Qt
-├── qt5ct/
-├── qt6ct/
-└── Wallpapers/    # 10 papéis de parede
-```
-
-## 📝 Observações
-
-- O `dialog` é instalado automaticamente se não estiver presente — é necessário para exibir a interface de configuração.
-- A senha de superusuário é solicitada **uma única vez** no início e mantida ativa durante toda a instalação.
-- O PyTorch é instalado com suporte a **GPU (CUDA)** se a opção NVIDIA for selecionada, ou com suporte apenas a **CPU** caso contrário.
-- Ao instalar o Docker, o usuário é adicionado ao grupo `docker`. É necessário fazer logout e login novamente para que a alteração tenha efeito.
-- O arquivo `.gtkrc-2.0` é gerado pelo `nwg-look` e contém um caminho fixo. Ele será sobrescrito na primeira execução do nwg-look.
-- Após o primeiro login no ZSH, o assistente do Powerlevel10k iniciará automaticamente. Se não iniciar, execute `p10k configure`.
