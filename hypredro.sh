@@ -447,7 +447,7 @@ if has "latex"; then
     sudo pacman -S --needed --noconfirm \
         texlive-basic texlive-latex texlive-latexrecommended texlive-latexextra \
         texlive-fontsrecommended texlive-fontsextra texlive-langportuguese \
-        texlive-pictures texlive-mathscience texlive-binextra texlive-plaingeneric
+        texlive-pictures texlive-mathscience texlive-binextra texlive-plaingeneric texlive-publishers
     echo "  ✓ LaTeX instalado."
 fi
 
